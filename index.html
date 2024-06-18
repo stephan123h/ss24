@@ -1,169 +1,124 @@
 <!DOCTYPE html>
-<html>
-
-<head>
-<meta charset=utf-8 />
-<meta
-      name="viewport"
-      content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
- />
-	
-<!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="application-name" content="PingPong">
-   
-<!-- Add to homescreen for Safari on iOS -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="PingPong">
-   	
-	
-<!-- Homescreen icons -->
-<link rel="apple-touch-icon" sizes="192x192" href="/icon/icon-192x192.png">
-
-
-<meta name="msapplication-TileColor" content="#ffffff">
-<meta name="msapplication-TileImage" content="/icon/icon-144x144.png">
-<meta name="theme-color" content="#ffffff">
-	
-<link rel='manifest' href='manifest.json'><!-- kein / vor manifest,json sonnst sucht es nicht im selben Ordner-->
-<title>Canvas</title>
-</head>
-
-<body>
-<canvas id="MeinCanvas" width="400" height="600"></canvas>
-	
-<script>
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('./service-worker.js');
-	console.log("Servive Worker registered");	  
-  });
-}
-
-//Als globale Variablen deklariert um mit allen Functions darauf zugreifen zu können
-	document.body.style.overflow = 'hidden';
-	
-	var x = 20;
-	var y = 200;
-	var dx = 0.5;
-	var dy = 1;
-	var R =10;
-	var context = MeinCanvas.getContext('2d');
-		
-	var padlx = 50;
-	var counter = 0;
-	var timer;
-	startflag = true;
-	
-	var canv = document.getElementById("MeinCanvas");
-	canv.width = document.documentElement.clientWidth;
-	canv.height = document.documentElement.clientHeight;
-	var WIDTH = canv.width;
-	var HEIGHT = canv.height;
-
-	function init(){
-		
-		document.addEventListener('keydown', function(event){
-			console.log(event);
-			console.log(event.key);
-			if(event.key == 'ArrowLeft' & padlx > 0){
-				padlx = padlx - 5;
-			}
-			if(event.key == 'ArrowRight' & padlx + 150 < WIDTH){
-				padlx = padlx + 5;
-			}
-			if(event.key == 'Enter'){
-				 timer = setInterval(draw, 4);
-				
-			}
-			
-		
-		});
-		
-		window.ondevicemotion = function(ereignis){
-		
- 
-   			var xgyro = Math.round(ereignis.accelerationIncludingGravity.x * 100) / 100;
-			padlx = padlx - xgyro;
-			
-			var xaccel = 0;//Math.round(ereignis.acceleration.x);
-  			var yaccel = Math.round(ereignis.acceleration.y);
-			var zaccel = Math.round(ereignis.acceleration.z);
-			
-			if(xaccel^2 + yaccel^2 + zaccel^2 > 10 && startflag ){ 
-				timer = setInterval(draw, 4);
-				startflag = false;
-			}
-			
-			
-		}
-		//timer = setInterval(draw, 5);
-		draw();
-	
-	}
-
-	function ball(x, y , r){
-		context.fillStyle = "#00A3B1";
-		context.beginPath();
-		context.arc(x, y, r, 0, Math.PI * 2, true);
-		context.closePath();
-		context.fill();
-	}
-	
-	function padl(x){
-		context.fillStyle = "#B1A308";
-		//context.beginPath();
-		context.fillRect(x, HEIGHT -50, 150, 20);
-		//context.closePath();
-		//context.fill();
-	}
-
-	function clear(){
-		//context.clearRect(0, 0, WIDTH, HEIGHT);
-		context.fillStyle = "lightgrey";
-		context.fillRect(0, 0,  WIDTH, HEIGHT);
-	}
-
-
-	function draw(){
-		
-		clear()
-		padl(padlx);
-		ball(x, y, 10)
-		if (x > WIDTH - R || x < 0 + R){
-			dx = -dx;
-		}
-		if (y > HEIGHT - R || y < 0 + R){
-			dy = -dy;
-		}
-		
-		if (y > HEIGHT - (R + 1)){
-		
-			var ausgabe = "GAME OVER, SCORE: " + counter;
-			context.font = "25px Arial";
-			context.fillText(ausgabe, 10, 50);
-			clearInterval(timer);
-			timer = 0;//zur Sicherheit auch noch null setzten
-			startflag = true;
-		}
-		
-		if( y > (HEIGHT -50 - 20 + R) & y < (HEIGHT -50 + 20 + R) & x > padlx & x < padlx + 150 )
-		{
-			dy = -dy;
-			counter++;
-			console.log(counter);
-		}
-		
-		x = x + dx;
-		y = y - dy;
-	}
-
-	init();
-
-
-</script>
-</body>
-
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logitech G502 Webseite</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Logitech G502 Maus</h1>
+    </header>
+    <div class="container-fluid">
+      <main>
+        <!-- HTML für das vertikale Menü -->
+        <div class="vertical-menu">
+          <a
+            href="https://www.logitechg.com/de-de/products/gaming-mice.html"
+            target="_blank"
+          >
+            Mäuse</a
+          >
+          <a
+            href="https://www.logitechg.com/de-de/products/gaming-keyboards.html"
+            target="_blank"
+          >
+            Tastaturen</a
+          >
+          <a
+            href="https://www.logitechg.com/de-de/products/gaming-audio.html"
+            target="_blank"
+          >
+            Headsets</a
+          >
+        </div>
+        <img src="bilder/logitech-g502.jpg" />
+      </main>
+      <footer>
+        <div id="logo">
+          <svg
+            version="1.0"
+            xmlns="http://www.w3.org/2000/svg"
+            width="50pt"
+            height="50pt"
+            viewBox="0 0 474.000000 160.000000"
+            preserveAspectRatio="xMidYMid meet"
+          >
+            <g
+              transform="translate(0.000000,160.000000) scale(0.100000,-0.100000)"
+              fill="#000000"
+              stroke="none"
+            >
+              <path
+                d="M0 800 l0 -800 2370 0 2370 0 0 800 0 800 -2370 0 -2370 0 0 -800z
+m3560 -16 c0 -153 -3 -280 -5 -283 -3 -2 -5 125 -5 284 0 159 3 286 6 283 3
+-3 5 -131 4 -284z m-2836 190 c22 -9 20 -19 -14 -70 -33 -47 -60 -114 -60
+-147 0 -11 14 -49 30 -84 36 -76 39 -124 8 -153 -27 -25 -48 -25 -98 0 -69 35
+-120 123 -120 207 1 106 82 211 190 244 33 10 45 10 64 3z m594 -172 l2 -172
+93 0 c81 0 94 -2 105 -20 12 -20 10 -20 -118 -20 l-130 0 0 188 c0 104 3 192
+7 196 4 4 14 5 23 4 13 -3 15 -29 18 -176z m912 153 c0 -20 -5 -25 -25 -25
+-20 0 -25 5 -25 25 0 20 5 25 25 25 20 0 25 -5 25 -25z m100 -25 l0 -50 55 0
+c53 0 55 -1 45 -20 -8 -15 -21 -20 -55 -20 l-45 0 0 -100 c0 -99 0 -101 26
+-110 14 -6 30 -7 35 -4 6 3 17 0 25 -7 21 -17 1 -29 -50 -29 -73 0 -76 9 -76
+212 0 171 1 178 20 178 17 0 20 -7 20 -50z m730 -20 c0 -38 3 -70 6 -70 3 0
+17 9 31 20 29 22 79 26 118 8 44 -20 55 -56 55 -173 0 -97 -2 -105 -19 -105
+-17 0 -19 10 -23 104 -4 122 -17 146 -77 146 -70 -1 -91 -39 -91 -166 0 -77
+-2 -84 -20 -84 -19 0 -20 7 -20 195 0 188 1 195 20 195 18 0 20 -7 20 -70z
+m1200 56 c6 -8 10 -25 8 -38 -3 -22 -7 -23 -140 -29 -117 -6 -142 -10 -173
+-29 -64 -40 -87 -114 -57 -184 23 -51 54 -75 120 -91 53 -14 73 -36 56 -62 -9
+-14 -25 -18 -67 -18 -46 0 -64 6 -99 31 -70 49 -102 103 -106 182 -3 55 0 77
+18 116 25 52 80 104 131 122 51 19 293 18 309 0z m-3267 -10 c6 -16 -34 -57
+-80 -80 -40 -20 -43 -20 -43 0 0 23 74 94 98 94 11 0 22 -6 25 -14z m737 -91
+c37 -19 67 -61 75 -107 27 -142 -158 -232 -253 -124 -89 102 -24 244 111 246
+21 0 51 -7 67 -15z m325 -15 l23 -22 4 24 c2 15 10 23 23 23 19 0 20 -7 20
+-141 0 -117 -3 -145 -18 -167 -36 -56 -107 -78 -183 -58 -51 14 -76 32 -66 49
+7 10 16 9 45 -3 92 -38 176 -4 177 73 l0 33 -25 -19 c-60 -47 -166 -27 -199
+37 -21 39 -20 110 0 140 45 63 147 80 199 31z m173 -118 l3 -142 -26 0 -25 0
+0 138 c0 76 3 142 7 146 4 4 14 5 23 4 12 -3 15 -26 18 -146z m392 135 c35
+-18 70 -74 70 -113 l0 -34 -110 0 c-93 0 -110 -2 -110 -16 0 -26 19 -53 50
+-69 39 -20 69 -19 109 6 23 14 37 17 44 10 16 -16 -18 -47 -64 -59 -114 -29
+-211 70 -179 184 12 41 49 86 80 97 27 10 85 7 110 -6z m328 -7 c35 -21 38
+-30 20 -48 -8 -8 -17 -6 -36 8 -15 12 -40 20 -64 20 -88 0 -132 -108 -73 -178
+35 -42 75 -49 128 -23 48 24 72 14 42 -19 -47 -52 -152 -44 -204 16 -84 95
+-14 244 114 244 22 0 54 -9 73 -20z m382 -10 c0 -5 -4 -10 -10 -10 -5 0 -10 5
+-10 10 0 6 5 10 10 10 6 0 10 -4 10 -10z m-2433 -55 c46 -31 15 -113 -58 -150
+-44 -23 -63 -18 -108 26 -62 62 -52 115 25 139 38 12 112 4 141 -15z m3354
+-15 c17 -10 19 -22 19 -135 0 -115 -1 -124 -20 -130 -36 -12 -60 3 -60 38 -1
+49 -34 114 -69 131 -16 9 -46 16 -65 16 -35 0 -66 21 -66 45 0 35 29 45 136
+45 58 0 114 -5 125 -10z m-3171 -40 c0 -20 -49 -34 -87 -24 -64 16 -53 34 21
+34 38 0 66 -4 66 -10z m-74 -202 c20 -39 3 -42 -44 -8 -42 30 -66 63 -55 73
+11 12 85 -37 99 -65z"
+              />
+              <path
+                d="M1597 819 c-15 -11 -32 -37 -38 -58 -24 -80 51 -156 130 -132 45 13
+71 54 71 111 0 84 -97 132 -163 79z"
+              />
+              <path
+                d="M1909 811 c-32 -33 -37 -67 -15 -110 15 -28 53 -51 87 -51 28 0 77
+27 89 49 14 26 12 82 -3 102 -37 48 -115 53 -158 10z"
+              />
+              <path
+                d="M2521 836 c-24 -13 -50 -51 -51 -73 0 -10 24 -13 90 -13 96 0 100 2
+75 49 -21 42 -74 59 -114 37z"
+              />
+              <path
+                d="M751 758 c-5 -13 -6 -27 -3 -33 3 -5 8 -2 10 5 3 8 11 23 20 33 14
+15 13 17 -2 17 -9 0 -20 -10 -25 -22z"
+              />
+              <path
+                d="M797 752 c-22 -24 -21 -29 3 -42 39 -21 85 15 59 46 -16 19 -43 17
+-62 -4z"
+              />
+              <path
+                d="M785 660 c3 -5 15 -10 26 -10 10 0 19 5 19 10 0 6 -12 10 -26 10 -14
+0 -23 -4 -19 -10z"
+              />
+            </g>
+          </svg>
+        </div>
+        <p>&copy; 2024 Logitech. Alle Rechte vorbehalten.</p>
+      </footer>
+    </div>
+  </body>
 </html>
